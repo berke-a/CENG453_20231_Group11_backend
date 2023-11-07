@@ -1,3 +1,9 @@
-com/example/ceng453_20231_group11_backend/Customer.class
+com/example/ceng453_20231_group11_backend/dto/UserDTO.class
+com/example/ceng453_20231_group11_backend/controller/UserController.class
+com/example/ceng453_20231_group11_backend/mapper/UserMapperImpl.class
+com/example/ceng453_20231_group11_backend/repository/UserRepository.class
 com/example/ceng453_20231_group11_backend/Ceng45320231Group11BackendApplication.class
-com/example/ceng453_20231_group11_backend/CustomerController.class
+com/example/ceng453_20231_group11_backend/entity/Score.class
+com/example/ceng453_20231_group11_backend/entity/User.class
+com/example/ceng453_20231_group11_backend/mapper/UserMapper.class
+com/example/ceng453_20231_group11_backend/service/UserService.class

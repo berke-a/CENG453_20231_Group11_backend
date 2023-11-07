@@ -38,6 +38,7 @@ public class Score {
 
     @Override
     public String toString() {
-        return String.format("ScoreEntityModel with id %d and player id %s", id, user.getId());
+        // todo: user.getId buggy
+        return String.format("ScoreEntityModel with id %d", id);
     }
 }

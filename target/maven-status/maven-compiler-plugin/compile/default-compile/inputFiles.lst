@@ -1,3 +1,8 @@
-/Users/utku/Desktop/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/Ceng45320231Group11BackendApplication.java
-/Users/utku/Desktop/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/CustomerController.java
-/Users/utku/Desktop/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/Customer.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/Ceng45320231Group11BackendApplication.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/mapper/UserMapper.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/controller/UserController.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/repository/UserRepository.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/dto/UserDTO.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/service/UserService.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/entity/User.java
+/Users/berke/Desktop/courses/ceng453/project/CENG453_20231_Group11_backend/src/main/java/com/example/ceng453_20231_group11_backend/entity/Score.java
