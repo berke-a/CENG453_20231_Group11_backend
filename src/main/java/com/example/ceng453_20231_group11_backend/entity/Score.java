@@ -38,7 +38,6 @@ public class Score {
 
     @Override
     public String toString() {
-        // todo: user.getId buggy
-        return String.format("ScoreEntityModel with id %d", id);
+        return String.format("ScoreEntityModel with id %d, and user with id %d", id, user.getId());
     }
 }
