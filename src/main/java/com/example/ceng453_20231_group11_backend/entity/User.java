@@ -1,6 +1,8 @@
 package com.example.ceng453_20231_group11_backend.entity;
 
+import com.example.ceng453_20231_group11_backend.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,11 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
     @Override
     public String toString() {
