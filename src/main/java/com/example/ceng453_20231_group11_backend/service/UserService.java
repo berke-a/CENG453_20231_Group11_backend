@@ -1,5 +1,6 @@
 package com.example.ceng453_20231_group11_backend.service;
 
+import com.example.ceng453_20231_group11_backend.constants.APIConstants;
 import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
 import com.example.ceng453_20231_group11_backend.dto.UserDTO;
 import com.example.ceng453_20231_group11_backend.entity.User;
@@ -30,11 +31,11 @@ public class UserService {
         Optional<User> user = userRepository.findByUsername(principal.getUsername());
         if (user.isPresent()) {
             UserDTO userDTO = userMapper.map(user.get());
-            return Pair.of(HttpStatus.OK, new ResponseDTO(userDTO, null, "success"));
+            return Pair.of(HttpStatus.OK, new ResponseDTO(userDTO, null, APIConstants.RESPONSE_SUCCESS));
         }
         log.warn("User not found with username:{}", principal.getUsername());
         return Pair.of(HttpStatus.NOT_FOUND, new ResponseDTO(null,
-                String.format("User not found with username:%s", principal.getUsername()), "fail"));
+                String.format("User not found with username:%s", principal.getUsername()), APIConstants.RESPONSE_FAIL));
     }
 
 }

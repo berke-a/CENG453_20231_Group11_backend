@@ -1,5 +1,6 @@
 package com.example.ceng453_20231_group11_backend.controller;
 
+import com.example.ceng453_20231_group11_backend.constants.APIConstants;
 import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
 import com.example.ceng453_20231_group11_backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class UserController {
         } else {
             log.warn("BAD REQUEST on login - missing Authorization Header in the request.");
             return ResponseEntity.badRequest().body(new ResponseDTO(null,
-                    "Missing Authorization Header in the request.", "fail"));
+                    "Missing Authorization Header in the request.", APIConstants.RESPONSE_FAIL));
         }
     }
 
