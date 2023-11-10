@@ -35,6 +35,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("UserEntityModel with id %d and username %s", id, username);
+        return String.format("UserEntityModel with id %d and username %s and password %s", id, username, password);
     }
 }
