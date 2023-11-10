@@ -43,16 +43,10 @@ public class UserService {
         String validationResult = validateRegisterFields(userDTO);
         if (validationResult.isEmpty()) {
             if (userRepository.findByUsername(userDTO.getUsername()).isEmpty()) {
-                // User user = userMapper.toUser(userDTO); // TODO: Mapper not working
-                User user = new User();
-                user.setUsername(userDTO.getUsername());
-                user.setPassword(userDTO.getPassword());
+                User user = userMapper.toUser(userDTO); // TODO: Mapper not working
                 user.setRole(Role.USER);
                 userRepository.save(user);
-                UserDTO userDTOResponse = new UserDTO();
-                userDTOResponse.setUsername(user.getUsername());
-                userDTOResponse.setPassword(user.getPassword());
-                // UserDTO userDTOResponse = userMapper.map(user); // TODO: Mapper not working
+                UserDTO userDTOResponse = userMapper.map(user); // TODO: Mapper not working
                 return Pair.of(HttpStatus.OK, new ResponseDTO(userDTOResponse,
                         String.format("Player is successfully created with username:%s", user.getUsername()), APIConstants.RESPONSE_SUCCESS));
             } else {
