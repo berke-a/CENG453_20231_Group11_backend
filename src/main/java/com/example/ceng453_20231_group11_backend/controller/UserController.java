@@ -1,6 +1,7 @@
 package com.example.ceng453_20231_group11_backend.controller;
 
 import com.example.ceng453_20231_group11_backend.constants.APIConstants;
+import com.example.ceng453_20231_group11_backend.dto.LoginDTO;
 import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
 import com.example.ceng453_20231_group11_backend.dto.UserDTO;
 import com.example.ceng453_20231_group11_backend.service.UserService;
@@ -25,9 +26,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<ResponseDTO> login(Authentication authRequest) {
-        if (authRequest != null) {
-            Pair<HttpStatus, ResponseDTO> response = userService.handleLogin(authRequest);
+    public ResponseEntity<ResponseDTO> login(LoginDTO loginDTO) {
+        if (loginDTO != null) {
+            Pair<HttpStatus, ResponseDTO> response = userService.handleLogin(loginDTO);
             return ResponseEntity.status(response.getFirst()).body(response.getSecond());
         } else {
             log.warn("BAD REQUEST on login - missing Authorization Header in the request.");

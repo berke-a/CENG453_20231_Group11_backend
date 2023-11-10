@@ -1,6 +1,7 @@
 package com.example.ceng453_20231_group11_backend.service;
 
 import com.example.ceng453_20231_group11_backend.constants.APIConstants;
+import com.example.ceng453_20231_group11_backend.dto.LoginDTO;
 import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
 import com.example.ceng453_20231_group11_backend.dto.UserDTO;
 import com.example.ceng453_20231_group11_backend.entity.User;
@@ -8,9 +9,14 @@ import com.example.ceng453_20231_group11_backend.enums.Role;
 import com.example.ceng453_20231_group11_backend.mapper.UserMapper;
 import com.example.ceng453_20231_group11_backend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +29,33 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Pair<HttpStatus, ResponseDTO> handleLogin(Authentication authRequest) {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) authRequest.getPrincipal();
-        Optional<User> user = userRepository.findByUsername(principal.getUsername());
-        if (user.isPresent()) {
-            UserDTO userDTO = userMapper.map(user.get());
-            return Pair.of(HttpStatus.OK, new ResponseDTO(userDTO, null, APIConstants.RESPONSE_SUCCESS));
+    public Pair<HttpStatus, ResponseDTO> handleLogin(LoginDTO loginDTO) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
+            );
+
+            // Assuming you have a method in your UserRepository to find a user by username
+            User user = userRepository.findByUsername(loginDTO.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            // Assuming you have a method in your UserMapper to convert User entity to UserDTO
+            UserDTO userDTO = userMapper.map(user);
+
+            return Pair.of(HttpStatus.OK, new ResponseDTO(userDTO, "User login successfully!", APIConstants.RESPONSE_SUCCESS));
+        } catch (AuthenticationException e) {
+            log.warn("Login failed for username: {}", loginDTO.getUsername());
+            return Pair.of(HttpStatus.UNAUTHORIZED, new ResponseDTO(null, "Login failed: Invalid username or password", APIConstants.RESPONSE_FAIL));
         }
-        log.warn("User not found with username:{}", principal.getUsername());
-        return Pair.of(HttpStatus.NOT_FOUND, new ResponseDTO(null,
-                String.format("User not found with username:%s", principal.getUsername()), APIConstants.RESPONSE_FAIL));
     }
 
 
