@@ -15,7 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity(name = "Score")
-@Table(name = "score")
+@Table(name = "Score")
 @EntityListeners(AuditingEntityListener.class)
 public class Score {
     @Id
