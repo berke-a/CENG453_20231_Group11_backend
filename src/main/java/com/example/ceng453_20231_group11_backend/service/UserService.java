@@ -20,8 +20,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 public class UserService {
@@ -44,11 +42,9 @@ public class UserService {
                     new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
             );
 
-            // Assuming you have a method in your UserRepository to find a user by username
             User user = userRepository.findByUsername(loginDTO.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            // Assuming you have a method in your UserMapper to convert User entity to UserDTO
             UserDTO userDTO = userMapper.map(user);
 
             return Pair.of(HttpStatus.OK, new ResponseDTO(userDTO, "User login successfully!", APIConstants.RESPONSE_SUCCESS));
