@@ -67,6 +67,7 @@ public class UserServiceTest {
                         1L,
                         loginDTO.getUsername(),
                         loginDTO.getPassword(),
+                        "testEmail",
                         Role.USER
                 )));
 
