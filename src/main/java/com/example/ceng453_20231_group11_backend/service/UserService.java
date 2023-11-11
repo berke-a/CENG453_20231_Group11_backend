@@ -36,6 +36,12 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Handles the login process for a user.
+     *
+     * @param loginDTO Data transfer object containing login credentials.
+     * @return A Pair containing the HttpStatus and a ResponseDTO with login results.
+     */
     public Pair<HttpStatus, ResponseDTO> handleLogin(LoginDTO loginDTO) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -54,7 +60,12 @@ public class UserService {
         }
     }
 
-
+    /**
+     * Registers a new user in the system.
+     *
+     * @param userDTO Data transfer object containing user registration data.
+     * @return A Pair containing the HttpStatus and a ResponseDTO with registration results.
+     */
     public Pair<HttpStatus, ResponseDTO> registerUser(UserDTO userDTO) {
         String validationResult = validateRegisterFields(userDTO);
         if (validationResult.isEmpty()) {
@@ -79,6 +90,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Validates the fields of a UserDTO for registration.
+     *
+     * @param userDTO Data transfer object containing user registration data.
+     * @return A string containing validation errors; empty if no errors are found.
+     */
     private String validateRegisterFields(UserDTO userDTO) {
         if (userDTO == null) {
             return "Missing user register credentials";
