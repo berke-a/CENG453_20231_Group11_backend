@@ -65,7 +65,7 @@ public class UserService {
                 userRepository.save(user);
                 UserDTO userDTOResponse = userMapper.map(user); // TODO: Mapper not working
                 return Pair.of(HttpStatus.OK, new ResponseDTO(userDTOResponse,
-                        String.format("Player is successfully created with username:%s", user.getUsername()), APIConstants.RESPONSE_SUCCESS));
+                        String.format("User is successfully created with username:%s", user.getUsername()), APIConstants.RESPONSE_SUCCESS));
             } else {
                 log.warn("Username exists, could not complete user registration for username:{}", userDTO.getUsername());
                 return Pair.of(HttpStatus.OK, new ResponseDTO(null,
@@ -81,7 +81,7 @@ public class UserService {
 
     private String validateRegisterFields(UserDTO userDTO) {
         if (userDTO == null) {
-            return "Missing player register credentials";
+            return "Missing user register credentials";
         }
 
         String result = "";
