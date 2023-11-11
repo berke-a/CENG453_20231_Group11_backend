@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @Entity(name = "User")
-@Table(name = "user")
+@Table(name = "User")
 @EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
@@ -35,6 +35,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("UserEntityModel with id %d and username %s", id, username);
+        return String.format("UserEntityModel with id %d and username %s and password %s", id, username, password);
     }
 }

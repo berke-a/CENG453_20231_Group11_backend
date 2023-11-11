@@ -1,7 +1,9 @@
 package com.example.ceng453_20231_group11_backend.controller;
 
 import com.example.ceng453_20231_group11_backend.constants.APIConstants;
+import com.example.ceng453_20231_group11_backend.dto.LoginDTO;
 import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
+import com.example.ceng453_20231_group11_backend.dto.UserDTO;
 import com.example.ceng453_20231_group11_backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,9 +26,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<ResponseDTO> login(Authentication authRequest) {
-        if (authRequest != null) {
-            Pair<HttpStatus, ResponseDTO> response = userService.handleLogin(authRequest);
+    public ResponseEntity<ResponseDTO> login(LoginDTO loginDTO) {
+        if (loginDTO != null) {
+            Pair<HttpStatus, ResponseDTO> response = userService.handleLogin(loginDTO);
             return ResponseEntity.status(response.getFirst()).body(response.getSecond());
         } else {
             log.warn("BAD REQUEST on login - missing Authorization Header in the request.");
@@ -33,5 +36,12 @@ public class UserController {
                     "Missing Authorization Header in the request.", APIConstants.RESPONSE_FAIL));
         }
     }
+
+    @PostMapping(value = "/register")
+    public ResponseEntity<ResponseDTO> registerPlayer(@RequestBody UserDTO newUserDTO) {
+        Pair<HttpStatus, ResponseDTO> response = userService.registerUser(newUserDTO);
+        return ResponseEntity.status(response.getFirst()).body(response.getSecond());
+    }
+
 
 }

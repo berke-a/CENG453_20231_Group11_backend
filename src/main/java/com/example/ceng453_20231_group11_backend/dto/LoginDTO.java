@@ -7,12 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class LoginDTO {
     private String username;
     private String password;
-
-    @Override
-    public String toString() {
-        return String.format("UserDTO with username %s and password %s", username, password);
-    }
 }
