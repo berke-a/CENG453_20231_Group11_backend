@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -47,5 +44,34 @@ public class UserController {
         return ResponseEntity.status(response.getFirst()).body(response.getSecond());
     }
 
+    @PostMapping("/reset-password")
+    @Operation(summary = "Request Password Reset",
+            description = "Sends a password reset token to the user's email.")
+    public ResponseEntity<ResponseDTO> requestPasswordReset(@RequestParam("email") String email) {
+        try {
+            Pair<HttpStatus, ResponseDTO> response = userService.createPasswordResetToken(email);
+            return ResponseEntity.status(response.getFirst()).body(response.getSecond());
+        } catch (Exception e) {
+            log.error("Error during password reset request: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(null, "Error processing password reset request",
+                            APIConstants.RESPONSE_FAIL));
+        }
+    }
 
+    @PostMapping("/change-password")
+    @Operation(summary = "Change Password",
+            description = "Changes the user's password using the reset token.")
+    public ResponseEntity<ResponseDTO> changePassword(@RequestParam("token") String token,
+                                                      @RequestParam("newPassword") String newPassword) {
+        try {
+            Pair<HttpStatus, ResponseDTO> response = userService.changePassword(token, newPassword);
+            return ResponseEntity.status(response.getFirst()).body(response.getSecond());
+        } catch (Exception e) {
+            log.error("Error during password change: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(null, "Error changing password",
+                            APIConstants.RESPONSE_FAIL));
+        }
+    }
 }
