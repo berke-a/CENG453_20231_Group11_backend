@@ -1,4 +1,4 @@
-package com.example.ceng453_20231_group11_backend.ControllerTest;
+package com.example.ceng453_20231_group11_backend.ServiceTest;
 
 import com.example.ceng453_20231_group11_backend.dto.LoginDTO;
 import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
@@ -42,7 +42,7 @@ public class UserServiceTest {
     AuthenticationManager authenticationManager;
 
     @Test
-    public void registerPlayerTest() {
+    public void testRegisterUser() {
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername("testUser");
         userDTO.setPassword("testPass");
@@ -52,7 +52,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void loginUserTest() {
+    public void testLoginUser() {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername("testUser");
         loginDTO.setPassword("testPass");
