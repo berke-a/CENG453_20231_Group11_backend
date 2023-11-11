@@ -144,7 +144,7 @@ public class UserService {
         passwordResetTokenRepository.save(resetToken);
 
         emailService.sendPasswordResetToken(user.getEmail(), token);
-        return Pair.of(HttpStatus.OK, new ResponseDTO(null, "Password reset token sent",
+        return Pair.of(HttpStatus.OK, new ResponseDTO(token, "Password reset token sent",
                 APIConstants.RESPONSE_SUCCESS));
     }
 
