@@ -1,6 +1,6 @@
 HELP.md
 
-/target
+
 
 ### STS ###
 .apt_generated
@@ -29,4 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Maven ###
 /target/
+
