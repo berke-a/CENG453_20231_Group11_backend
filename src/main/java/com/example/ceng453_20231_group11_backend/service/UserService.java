@@ -79,8 +79,7 @@ public class UserService {
             } else {
                 log.warn("Username exists, could not complete user registration for username:{}", userDTO.getUsername());
                 return Pair.of(HttpStatus.OK, new ResponseDTO(null,
-                        String.format("Username already exists.\nPlease choose another and try again",
-                                userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
+                        String.format("Username '%s' already exists.\nPlease choose another and try again", userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
             }
         } else {
             return Pair.of(HttpStatus.OK, new ResponseDTO(null,
