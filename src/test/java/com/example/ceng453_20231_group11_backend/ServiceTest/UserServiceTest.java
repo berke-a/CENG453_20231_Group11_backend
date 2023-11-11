@@ -56,6 +56,7 @@ public class UserServiceTest {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername("testUser");
         loginDTO.setPassword("testPass");
+        String email = "test@example.com";
 
         Authentication mockAuthentication = mock(Authentication.class);
         given(authenticationManager.authenticate(ArgumentMatchers.any()))
@@ -67,7 +68,7 @@ public class UserServiceTest {
                         1L,
                         loginDTO.getUsername(),
                         loginDTO.getPassword(),
-                        "testEmail",
+                        email,
                         Role.USER
                 )));
 
