@@ -4,6 +4,7 @@ import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
 import com.example.ceng453_20231_group11_backend.enums.LeaderboardInterval;
 import com.example.ceng453_20231_group11_backend.service.ScoreService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,11 @@ public class ScoreController {
     }
 
     @GetMapping
+    @Operation(summary = "Get Leaderboard",
+            description = """
+                             Retrieves the leaderboard for a specified time interval.
+                             The interval can be weekly, monthly, or all-time.
+                             """)
     public ResponseEntity<ResponseDTO> getLeaderboard(LeaderboardInterval interval) {
         if (interval.equals(LeaderboardInterval.WEEKLY)) {
             Pair<HttpStatus, ResponseDTO> serviceResponse = scoreService.getWeeklyLeaderboard();
