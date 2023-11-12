@@ -18,11 +18,11 @@ public class EmailService {
 
     public void sendPasswordResetToken(String to, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("no-reply@catan453.com");
+        message.setFrom("ceng453group11catan@gmail.com");
         message.setTo(to);
         message.setSubject("Password Reset Token");
         message.setText("Here is your password reset token: " + token +
                 "\nPlease use this token to reset your password.");
-        //mailSender.send(message);
+        mailSender.send(message);
     }
 }
