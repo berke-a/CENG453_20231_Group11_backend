@@ -6,6 +6,7 @@ import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
 import com.example.ceng453_20231_group11_backend.dto.UserDTO;
 import com.example.ceng453_20231_group11_backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,9 @@ public class UserController {
     @PostMapping(value = "/login")
     @Operation(summary = "User Login",
             description = "Authenticates a user with the provided login credentials.")
-    public ResponseEntity<ResponseDTO> login(LoginDTO loginDTO) {
+    public ResponseEntity<ResponseDTO> login(LoginDTO loginDTO, HttpServletRequest request) {
         if (loginDTO != null) {
-            Pair<HttpStatus, ResponseDTO> response = userService.handleLogin(loginDTO);
+            Pair<HttpStatus, ResponseDTO> response = userService.handleLogin(loginDTO, request);
             return ResponseEntity.status(response.getFirst()).body(response.getSecond());
         } else {
             log.warn("BAD REQUEST on login - missing Authorization Header in the request.");
@@ -73,5 +74,13 @@ public class UserController {
                     .body(new ResponseDTO(null, "Error changing password",
                             APIConstants.RESPONSE_FAIL));
         }
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "User Logout",
+            description = "Logs out the current user and invalidates the session.")
+    public ResponseEntity<ResponseDTO> logout(HttpServletRequest request) {
+        Pair<HttpStatus, ResponseDTO> response = userService.handleLogout(request);
+        return ResponseEntity.status(response.getFirst()).body(response.getSecond());
     }
 }

@@ -10,14 +10,19 @@ import com.example.ceng453_20231_group11_backend.enums.Role;
 import com.example.ceng453_20231_group11_backend.mapper.UserMapper;
 import com.example.ceng453_20231_group11_backend.repository.PasswordResetTokenRepository;
 import com.example.ceng453_20231_group11_backend.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -49,13 +54,20 @@ public class UserService {
      * Handles the login process for a user.
      *
      * @param loginDTO Data transfer object containing login credentials.
+     * @param request HttpServletRequest to manage session.
      * @return A Pair containing the HttpStatus and a ResponseDTO with login results.
      */
-    public Pair<HttpStatus, ResponseDTO> handleLogin(LoginDTO loginDTO) {
+    public Pair<HttpStatus, ResponseDTO> handleLogin(LoginDTO loginDTO, HttpServletRequest request) {
         try {
-            authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
             );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                    SecurityContextHolder.getContext());
 
             User user = userRepository.findByUsername(loginDTO.getUsername())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -85,7 +97,7 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
                 user.setRole(Role.USER);
                 userRepository.save(user);
-                UserDTO userDTOResponse = userMapper.map(user); // TODO: Mapper not working
+                UserDTO userDTOResponse = userMapper.map(user);
                 return Pair.of(HttpStatus.OK, new ResponseDTO(userDTOResponse,
                         String.format("User is successfully created with username:%s", user.getUsername()),
                         APIConstants.RESPONSE_SUCCESS));
@@ -93,11 +105,12 @@ public class UserService {
                 log.warn("Username exists, could not complete user registration for username:{}",
                         userDTO.getUsername());
                 return Pair.of(HttpStatus.OK, new ResponseDTO(null,
-                        String.format("Username '%s' already exists.\nPlease choose another and try again", userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
+                        String.format("Username '%s' already exists.\nPlease choose another and try again",
+                                userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
             }
         } else {
             return Pair.of(HttpStatus.OK, new ResponseDTO(null,
-                    String.format("Validation Error on registation.\nFollowing constraints must be met: %s",
+                    String.format("Validation Error on registration.\nFollowing constraints must be met: %s",
                             validationResult),
                     APIConstants.RESPONSE_FAIL));
         }
@@ -127,6 +140,12 @@ public class UserService {
         return result;
     }
 
+    /**
+     * Creates and sends a password reset token to the user's email.
+     *
+     * @param email The email address of the user who requests a password reset.
+     * @return Pair of HttpStatus and ResponseDTO with the result of the password reset request.
+     */
     public Pair<HttpStatus, ResponseDTO> createPasswordResetToken(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
@@ -148,7 +167,12 @@ public class UserService {
                 APIConstants.RESPONSE_SUCCESS));
     }
 
-
+    /**
+     * Validates the password reset token.
+     *
+     * @param token The password reset token to be validated.
+     * @return Pair of HttpStatus and ResponseDTO indicating if the token is valid.
+     */
     public Pair<HttpStatus, ResponseDTO> validatePasswordResetToken(String token) {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token);
         if (resetToken == null || resetToken.getExpirationDate().before(new Timestamp(System.currentTimeMillis()))) {
@@ -159,6 +183,13 @@ public class UserService {
                 APIConstants.RESPONSE_SUCCESS));
     }
 
+    /**
+     * Changes the password of a user based on a valid password reset token.
+     *
+     * @param token The password reset token.
+     * @param newPassword The new password to set for the user.
+     * @return Pair of HttpStatus and ResponseDTO indicating the result of the password change process.
+     */
     public Pair<HttpStatus, ResponseDTO> changePassword(String token, String newPassword) {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token);
         if (resetToken == null || resetToken.getExpirationDate().before(new Timestamp(System.currentTimeMillis()))) {
@@ -173,4 +204,20 @@ public class UserService {
                 APIConstants.RESPONSE_SUCCESS));
     }
 
+    /**
+     * Handles the process of logging out a user.
+     *
+     * @param request The HttpServletRequest, used to access the user's session.
+     * @return A Pair containing the HttpStatus and a ResponseDTO indicating the outcome of the logout process.
+     */
+    public Pair<HttpStatus, ResponseDTO> handleLogout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+            return Pair.of(HttpStatus.OK, new ResponseDTO(null, "Logged out successfully",
+                    APIConstants.RESPONSE_SUCCESS));
+        }
+        return Pair.of(HttpStatus.OK, new ResponseDTO(null,
+                "No active session found or already logged out", APIConstants.RESPONSE_SUCCESS));
+    }
 }
