@@ -42,8 +42,8 @@ public class UserController {
     @PostMapping(value = "/register")
     @Operation(summary = "Register New Player",
             description = "Registers a new player with the provided user details.")
-    public ResponseEntity<ResponseDTO> registerUser(@RequestBody UserDTO newUserDTO) {
-        Pair<HttpStatus, ResponseDTO> response = userService.registerUser(newUserDTO);
+    public ResponseEntity<ResponseDTO> register(@RequestBody UserDTO newUserDTO) {
+        Pair<HttpStatus, ResponseDTO> response = userService.handleRegister(newUserDTO);
         return ResponseEntity.status(response.getFirst()).body(response.getSecond());
     }
 

@@ -65,7 +65,7 @@ public class UserService {
      * @param userDTO Data transfer object containing user registration data.
      * @return A Pair containing the HttpStatus and a ResponseDTO with registration results.
      */
-    public Pair<HttpStatus, ResponseDTO> registerUser(UserDTO userDTO) {
+    public Pair<HttpStatus, ResponseDTO> handleRegister(UserDTO userDTO) {
         String validationResult = validateRegisterFields(userDTO);
         if (validationResult.isEmpty()) {
             if (userRepository.findByUsername(userDTO.getUsername()).isEmpty()) {

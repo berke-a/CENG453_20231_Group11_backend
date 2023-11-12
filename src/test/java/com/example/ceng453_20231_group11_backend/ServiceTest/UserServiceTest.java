@@ -48,7 +48,7 @@ public class UserServiceTest {
         userDTO.setPassword("testPass");
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(Optional.empty());
         Assert.assertEquals("User is successfully created with username:" + userDTO.getUsername(),
-                userService.registerUser(userDTO).getSecond().getMessage());
+                userService.handleRegister(userDTO).getSecond().getMessage());
     }
 
     @Test

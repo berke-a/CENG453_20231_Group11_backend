@@ -36,8 +36,8 @@ public class UserControllerTest {
         Pair<HttpStatus, ResponseDTO> response = Pair.of(HttpStatus.OK, new ResponseDTO(null,
                 String.format("Player is successfully created with username: %s",
                         userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
-        when(userService.registerUser(userDTO)).thenReturn(response);
-        Assert.assertEquals(response.getFirst(), userController.registerUser(userDTO).getStatusCode());
+        when(userService.handleRegister(userDTO)).thenReturn(response);
+        Assert.assertEquals(response.getFirst(), userController.register(userDTO).getStatusCode());
     }
 
     @Test
