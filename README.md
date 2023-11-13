@@ -8,7 +8,9 @@ After cloning the project to your local machine, in the project directory, use `
 
 ## Database
 
-There are 3 entities in the project which are 'user', 'score', and 'password_reset_token'. The fields and relation between this entities can be seen from the `ER-diagram.png` inside the root folder.
+There are 3 entities in the project which are 'user', 'score', and 'password_reset_token'. 
+
+![ER diagram](https://github.com/berke-a/CENG453_20231_Group11_backend/assets/57680495/63b0d705-f334-42b5-8ce3-2cd4f6e64d70)
 
 ## Existing Users
 
