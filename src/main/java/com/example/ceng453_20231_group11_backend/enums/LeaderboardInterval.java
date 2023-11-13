@@ -2,7 +2,8 @@ package com.example.ceng453_20231_group11_backend.enums;
 
 public enum LeaderboardInterval {
     WEEKLY("WEEKLY"),
-    MONTHLY("MONTHLY");
+    MONTHLY("MONTHLY"),
+    ALLTIME("ALLTIME");
 
     private final String displayName;
 
