@@ -4,12 +4,27 @@ This is the Group11 backend application of the CENG453 Term Project. In this bac
 
 ## How to run the application
 
-After cloning the project to your local machine, in the project directory, use `mvn clean install` command on your terminal to build the backend application. Then use `java -jar target/CENG453_20231_Group11_backend-0.0.1-SNAPSHOT.jar` to run the application that you built. 
+After cloning the project to your local machine, in the project directory, use `mvn clean install` command on your terminal to build the backend application. Then use `java -jar target/CENG453_20231_Group11_backend-0.0.1-SNAPSHOT.jar` to run the application that you built.
 
 ## Database
 
 There are 3 entities in the project which are 'user', 'score', and 'password_reset_token'. The fields and relation between this entities can be seen from the `ER-diagram.png` inside the root folder.
 
+## Existing Users
+
+There are 5 different users which can be used to use functions requiring authentication. This users are:
+
+| Username | Password |
+| -------- | -------- |
+| admin   | admin   |
+| user1   | password1   |
+| user2   | password2  |
+| user3   | password3   |
+| user4   | password4   |
+| user5   | password5   |
+
 ## Documentation
 
-`http://localhost:8080/swagger-ui/index.html` can be used to reach the API documentation of the project after running the application as stated above.
+There are two ways to reach the API documentation of the project:
+- `http://localhost:8080/swagger-ui/index.html` can be used after running the application as stated above. 
+- `https://ceng453-20231-group11-backend.onrender.com/swagger-ui/index.html#/` is also available which uses Render for hosting.
