@@ -39,7 +39,8 @@ public class SecurityConfig {
                                 "/api/users/login",
                                 "/api/users/register",
                                 "/api/users/reset-password",
-                                "/api/users/change-password").permitAll()
+                                "/api/users/change-password",
+                                "/api/scoreboard").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
