@@ -60,11 +60,17 @@ public class UserServiceTest {
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername("testUser");
         userDTO.setPassword("testPass");
-        userDTO.setEmail("testEmail");
+        userDTO.setEmail("test@example.com");
+
         when(userRepository.findByUsername(userDTO.getUsername())).thenReturn(Optional.empty());
-        Assert.assertEquals("User is successfully created with username:" + userDTO.getUsername(),
-                userService.handleRegister(userDTO).getSecond().getMessage());
+        when(userRepository.findByEmail(userDTO.getEmail())).thenReturn(Optional.empty());
+
+        Pair<HttpStatus, ResponseDTO> result = userService.handleRegister(userDTO);
+
+        Assert.assertEquals(HttpStatus.OK, result.getFirst());
+        Assert.assertEquals("User is successfully created with username: testUser", result.getSecond().getMessage());
     }
+
 
     @Test
     public void testLoginUser() {
