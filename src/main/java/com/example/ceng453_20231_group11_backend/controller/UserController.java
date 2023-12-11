@@ -11,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -40,7 +43,7 @@ public class UserController {
     @PostMapping(value = "/register")
     @Operation(summary = "Register New Player",
             description = "Registers a new player with the provided user details.")
-    public ResponseEntity<ResponseDTO> register(@RequestBody UserDTO newUserDTO) {
+    public ResponseEntity<ResponseDTO> register(UserDTO newUserDTO) {
         Pair<HttpStatus, ResponseDTO> response = userService.handleRegister(newUserDTO);
         return ResponseEntity.status(response.getFirst()).body(response.getSecond());
     }
