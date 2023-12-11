@@ -138,7 +138,7 @@ public class UserService {
             result += "Password cannot be empty.\n";
         }
         if (userDTO.getEmail() == null || userDTO.getEmail().isEmpty()) {
-            result += "Password cannot be empty.\n";
+            result += "Email cannot be empty.\n";
         }
         return result;
     }
