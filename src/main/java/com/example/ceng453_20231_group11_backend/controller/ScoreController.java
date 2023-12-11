@@ -1,5 +1,6 @@
 package com.example.ceng453_20231_group11_backend.controller;
 
+import com.example.ceng453_20231_group11_backend.constants.APIConstants;
 import com.example.ceng453_20231_group11_backend.dto.ResponseDTO;
 import com.example.ceng453_20231_group11_backend.enums.LeaderboardInterval;
 import com.example.ceng453_20231_group11_backend.service.ScoreService;
@@ -36,9 +37,11 @@ public class ScoreController {
         } else if (interval.equals(LeaderboardInterval.MONTHLY)) {
             Pair<HttpStatus, ResponseDTO> serviceResponse = scoreService.getMonthlyLeaderboard();
             return ResponseEntity.status(serviceResponse.getFirst()).body(serviceResponse.getSecond());
-        } else {
+        } else if (interval.equals(LeaderboardInterval.ALLTIME)) {
             Pair<HttpStatus, ResponseDTO> serviceResponse = scoreService.getAllTimeLeaderboard();
             return ResponseEntity.status(serviceResponse.getFirst()).body(serviceResponse.getSecond());
+        } else {
+            return ResponseEntity.badRequest().body(new ResponseDTO(null, "Bad leaderboard request.", APIConstants.RESPONSE_FAIL));
         }
     }
 

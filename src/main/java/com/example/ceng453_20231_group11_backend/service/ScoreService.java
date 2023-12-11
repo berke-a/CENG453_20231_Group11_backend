@@ -30,5 +30,4 @@ public class ScoreService {
         return Pair.of(HttpStatus.OK, new ResponseDTO(scoreRepository.getLeaderboardAllTime(), null, APIConstants.RESPONSE_SUCCESS));
     }
 
-
 }
