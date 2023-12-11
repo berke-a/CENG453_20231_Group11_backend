@@ -68,19 +68,25 @@ public class UserService {
     public Pair<HttpStatus, ResponseDTO> handleRegister(UserDTO userDTO) {
         String validationResult = validateRegisterFields(userDTO);
         if (validationResult.isEmpty()) {
-            if (userRepository.findByUsername(userDTO.getUsername()).isEmpty()) {
-                User user = userMapper.toUser(userDTO);
-                user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-                user.setRole(Role.USER);
-                userRepository.save(user);
-                UserDTO userDTOResponse = userMapper.map(user); // TODO: Mapper not working
-                return Pair.of(HttpStatus.OK, new ResponseDTO(userDTOResponse,
-                        String.format("User is successfully created with username:%s", user.getUsername()), APIConstants.RESPONSE_SUCCESS));
-            } else {
+            if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
                 log.warn("Username exists, could not complete user registration for username:{}", userDTO.getUsername());
                 return Pair.of(HttpStatus.OK, new ResponseDTO(null,
                         String.format("Username '%s' already exists.\nPlease choose another and try again", userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
             }
+            if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+                log.warn("Email exists, could not complete user registration for email:{}", userDTO.getEmail());
+                return Pair.of(HttpStatus.OK, new ResponseDTO(null,
+                        String.format("Email '%s' already exists.\nPlease choose another and try again", userDTO.getEmail()), APIConstants.RESPONSE_FAIL));
+            }
+
+            User user = userMapper.toUser(userDTO);
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            user.setRole(Role.USER);
+            userRepository.save(user);
+            UserDTO userDTOResponse = userMapper.map(user); // TODO: Mapper not working
+            return Pair.of(HttpStatus.OK, new ResponseDTO(userDTOResponse,
+                    String.format("User is successfully created with username:%s", user.getUsername()), APIConstants.RESPONSE_SUCCESS));
+            
         } else {
             return Pair.of(HttpStatus.OK, new ResponseDTO(null,
                     String.format("Validation Error on registation.\nFollowing constraints must be met: %s", validationResult),
