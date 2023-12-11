@@ -68,7 +68,7 @@ public class UserServiceTest {
         Pair<HttpStatus, ResponseDTO> result = userService.handleRegister(userDTO);
 
         Assert.assertEquals(HttpStatus.OK, result.getFirst());
-        Assert.assertEquals("User is successfully created with username: testUser", result.getSecond().getMessage());
+        Assert.assertEquals("User is successfully created with username:testUser", result.getSecond().getMessage());
     }
 
 
