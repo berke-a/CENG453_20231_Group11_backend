@@ -54,7 +54,7 @@ public class UserService {
      * Handles the login process for a user.
      *
      * @param loginDTO Data transfer object containing login credentials.
-     * @param request HttpServletRequest to manage session.
+     * @param request  HttpServletRequest to manage session.
      * @return A Pair containing the HttpStatus and a ResponseDTO with login results.
      */
     public Pair<HttpStatus, ResponseDTO> handleLogin(LoginDTO loginDTO, HttpServletRequest request) {
@@ -94,12 +94,12 @@ public class UserService {
         if (validationResult.isEmpty()) {
             if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
                 log.warn("Username exists, could not complete user registration for username:{}", userDTO.getUsername());
-                return Pair.of(HttpStatus.OK, new ResponseDTO(null,
+                return Pair.of(HttpStatus.BAD_REQUEST, new ResponseDTO(null,
                         String.format("Username '%s' already exists.\nPlease choose another and try again", userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
             }
             if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
                 log.warn("Email exists, could not complete user registration for email:{}", userDTO.getEmail());
-                return Pair.of(HttpStatus.OK, new ResponseDTO(null,
+                return Pair.of(HttpStatus.BAD_REQUEST, new ResponseDTO(null,
                         String.format("Email '%s' already exists.\nPlease choose another and try again", userDTO.getEmail()), APIConstants.RESPONSE_FAIL));
             }
 
@@ -111,28 +111,6 @@ public class UserService {
             return Pair.of(HttpStatus.OK, new ResponseDTO(userDTOResponse,
                     String.format("User is successfully created with username:%s", user.getUsername()), APIConstants.RESPONSE_SUCCESS));
 
-            if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
-                log.warn("Username exists, could not complete user registration for username: {}", userDTO.getUsername());
-                return Pair.of(HttpStatus.BAD_REQUEST, new ResponseDTO(null,
-                        String.format("Username '%s' already exists.\nPlease choose another and try again",
-                                userDTO.getUsername()), APIConstants.RESPONSE_FAIL));
-            }
-
-            if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-                log.warn("Email exists, could not complete user registration for email: {}", userDTO.getEmail());
-                return Pair.of(HttpStatus.BAD_REQUEST, new ResponseDTO(null,
-                        String.format("Email '%s' already exists.\nPlease choose another and try again",
-                                userDTO.getEmail()), APIConstants.RESPONSE_FAIL));
-            }
-
-            User user = userMapper.toUser(userDTO);
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            user.setRole(Role.USER);
-            userRepository.save(user);
-            UserDTO userDTOResponse = userMapper.map(user);
-            return Pair.of(HttpStatus.OK, new ResponseDTO(userDTOResponse,
-                    String.format("User is successfully created with username: %s", user.getUsername()),
-                    APIConstants.RESPONSE_SUCCESS));
         } else {
             return Pair.of(HttpStatus.BAD_REQUEST, new ResponseDTO(null,
                     String.format("Validation Error on registration.\nFollowing constraints must be met: %s",
@@ -211,7 +189,7 @@ public class UserService {
     /**
      * Changes the password of a user based on a valid password reset token.
      *
-     * @param token The password reset token.
+     * @param token       The password reset token.
      * @param newPassword The new password to set for the user.
      * @return Pair of HttpStatus and ResponseDTO indicating the result of the password change process.
      */
