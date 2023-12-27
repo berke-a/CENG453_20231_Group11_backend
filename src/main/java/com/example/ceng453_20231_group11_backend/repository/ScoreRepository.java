@@ -13,34 +13,38 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
 
     @Query(value =
             "SELECT user.username, totalScoreTable.score " +
-            "FROM user, " +
-            "   (SELECT score.user_id, SUM(score.score_value) AS score " +
-            "    FROM score " +
-            "    WHERE score.created_at >= CURDATE() - INTERVAL 7 DAY " +
-            "    GROUP BY score.user_id) as totalScoreTable " +
-            "WHERE totalScoreTable.user_id = user.id " +
-            "ORDER BY totalScoreTable.score DESC", nativeQuery = true)
+                    "FROM user, " +
+                    "   (SELECT score.user_id, SUM(score.score_value) AS score " +
+                    "    FROM score " +
+                    "    WHERE score.created_at >= CURDATE() - INTERVAL 7 DAY " +
+                    "    GROUP BY score.user_id) as totalScoreTable " +
+                    "WHERE totalScoreTable.user_id = user.id " +
+                    "ORDER BY totalScoreTable.score DESC", nativeQuery = true)
     List<Map<String, Long>> getLeaderboardWeekly();
 
     @Query(value =
             "SELECT user.username, totalScoreTable.score " +
-            "FROM user, " +
-            "   (SELECT score.user_id, SUM(score.score_value) AS score " +
-            "    FROM score " +
-            "    WHERE score.created_at >= CURDATE() - INTERVAL 30 DAY " +
-            "    GROUP BY score.user_id) as totalScoreTable " +
-            "WHERE totalScoreTable.user_id = user.id " +
-            "ORDER BY totalScoreTable.score DESC", nativeQuery = true)
+                    "FROM user, " +
+                    "   (SELECT score.user_id, SUM(score.score_value) AS score " +
+                    "    FROM score " +
+                    "    WHERE score.created_at >= CURDATE() - INTERVAL 30 DAY " +
+                    "    GROUP BY score.user_id) as totalScoreTable " +
+                    "WHERE totalScoreTable.user_id = user.id " +
+                    "ORDER BY totalScoreTable.score DESC", nativeQuery = true)
     List<Map<String, Long>> getLeaderboardMonthly();
 
     @Query(value =
             "SELECT user.username, totalScoreTable.score " +
-            "FROM user, " +
-            "   (SELECT score.user_id, SUM(score.score_value) AS score " +
-            "    FROM score " +
-            "    GROUP BY score.user_id) as totalScoreTable " +
-            "WHERE totalScoreTable.user_id = user.id " +
-            "ORDER BY totalScoreTable.score DESC", nativeQuery = true)
+                    "FROM user, " +
+                    "   (SELECT score.user_id, SUM(score.score_value) AS score " +
+                    "    FROM score " +
+                    "    GROUP BY score.user_id) as totalScoreTable " +
+                    "WHERE totalScoreTable.user_id = user.id " +
+                    "ORDER BY totalScoreTable.score DESC", nativeQuery = true)
     List<Map<String, Long>> getLeaderboardAllTime();
 
+    @Query(value =
+            "INSERT INTO score (user_id, score_value, created_at) " +
+                    "VALUES (?1, ?2, ?3)", nativeQuery = true)
+    void addScore(Long userId, int score, java.sql.Date date);
 }
