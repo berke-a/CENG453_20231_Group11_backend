@@ -1,0 +1,8 @@
+CREATE TABLE lobby_user
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    lobby_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (lobby_id) REFERENCES game_lobby(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
