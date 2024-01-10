@@ -34,9 +34,9 @@ public class UserController {
             Pair<HttpStatus, ResponseDTO> response = userService.handleLogin(loginDTO, request);
             return ResponseEntity.status(response.getFirst()).body(response.getSecond());
         } else {
-            log.warn("BAD REQUEST on login - missing Authorization Header in the request.");
+            log.warn("BAD REQUEST on login - missing loginDTO");
             return ResponseEntity.badRequest().body(new ResponseDTO(null,
-                    "Missing Authorization Header in the request.", APIConstants.RESPONSE_FAIL));
+                    "Missing login credentials", APIConstants.RESPONSE_FAIL));
         }
     }
 
